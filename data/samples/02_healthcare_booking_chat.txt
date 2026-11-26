@@ -1,0 +1,16 @@
+[Meeting Notes - Quick Call with Dr. Patel, CareBridge Clinic]
+
+Hey, we need an app for our patients to book clinic appointments online and talk to doctors remotely. Currently our front desk gets overwhelmed with phone calls every morning.
+
+Rough ideas discussed:
+- Patients should be able to sign up, pick a doctor, and book a slot.
+- Maybe video consultations too? Or at least chat with nurses.
+- Need reminders so people don't miss appointments (SMS or WhatsApp?).
+- Front desk staff needs some kind of calendar view to reschedule people.
+- Also want electronic prescriptions eventually, not sure if that's Phase 1 or later.
+- Needs to connect with our existing clinic software (forgot the exact vendor name, will check with IT).
+- Must be very secure because of medical records.
+- We want it live "as soon as possible", ideally before Q4. No fixed budget discussed yet.
+- Also need an admin screen to see revenue or total visits, maybe export something for billing.
+
+Action item: Follow up with Dr. Patel on HIPAA/local compliance, EHR API docs, and payment gateway choice.

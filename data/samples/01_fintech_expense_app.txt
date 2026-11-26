@@ -1,0 +1,32 @@
+Subject: Project Proposal Request - FinFlow B2B Expense & Reimbursement Portal
+From: Sarah Jenkins, VP of Operations at FinFlow Logistics
+
+Hi Team,
+
+We want to build a modern web-based expense management and reimbursement portal for our 350 employees and 25 finance approvers. Right now, employees email PDF receipts and Excel spreadsheets to finance, which causes delays and audit errors.
+
+Core Goals:
+- Cut reimbursement turnaround time from 14 days to under 3 business days.
+- Provide full audit trails for quarterly compliance reviews.
+
+User Roles:
+1. Employee: Submit expense claims, upload receipt photos/PDFs, track approval status, view payout history.
+2. Manager: Approve/reject team claims up to $2,500, leave review comments, receive email/Slack alerts.
+3. Finance Admin: Final audit review, flag policy violations, export approved batches to CSV/QuickBooks Online, manage expense categories and spend limits.
+
+Required Capabilities:
+- OCR auto-extraction of vendor, date, currency, and total from uploaded receipts.
+- Policy rules engine (e.g., max meal allowance $60/day, automatic duplicate receipt detection).
+- Multi-currency support (USD, EUR, GBP) with daily exchange rate conversion.
+- Role-based access control with SSO (Google Workspace / Okta).
+- Interactive analytics dashboard showing spend by department, category, and pending approvals.
+
+Non-Functional & Constraints:
+- Must handle 500 concurrent users during month-end close, with API responses under 1.5 seconds.
+- SOC 2 Type II alignment, AES-256 encryption at rest, TLS 1.3 in transit.
+- 99.9% uptime SLA.
+- Target MVP launch in 12 weeks; budget ceiling is around $85,000.
+- Prefer cloud-hosted stack on AWS with automated CI/CD.
+
+Best regards,
+Sarah Jenkins

@@ -1,0 +1,44 @@
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache & test/build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# Environment variables, API keys & secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.secret
+.streamlit/secrets.toml
+
+# Local SQLite databases containing client/private data
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+data/*.db
+data/*.db-journal
+data/*.sqlite
+
+# Generated exports & logs
+exports/*.pdf
+*.log
+
+# IDE / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
