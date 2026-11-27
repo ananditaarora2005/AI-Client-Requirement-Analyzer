@@ -1,27 +1,57 @@
-/* Modern SaaS Theme (Light & Night/Dark Mode) for AI Client Requirement Analyzer */
+/* ==========================================================================
+   AI CLIENT REQUIREMENT ANALYZER — ENTERPRISE SAAS DESIGN SYSTEM
+   Supports Light & Complete Night (Dark) Mode with High Contrast
+   ========================================================================== */
+
+/* ── Typography & System Fonts ─────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* ── Global Reset & Canvas ─────────────────────────────────────────────── */
+html, body, [class*="css"] {
+    font-family: var(--font-sans) !important;
+}
 
 .stApp,
 [data-testid="stAppViewContainer"],
-[data-testid="stMain"] {
+[data-testid="stMain"],
+[data-testid="stMainBlockContainer"] {
     background-color: var(--bg-canvas) !important;
     color: var(--text-primary) !important;
+    font-family: var(--font-sans) !important;
 }
 
-/* Clean minimal top bar; hide Deploy clutter for SaaS presentation */
+/* Hide Streamlit default header decoration for clean SaaS look */
 [data-testid="stHeader"] {
     background-color: transparent !important;
 }
-[data-testid="stAppDeployButton"] {
+[data-testid="stAppDeployButton"],
+[data-testid="stStatusWidget"] {
     display: none !important;
 }
 
 .block-container {
-    padding-top: 1.5rem;
-    padding-bottom: 2.5rem;
-    max-width: 1300px;
+    padding-top: 1.5rem !important;
+    padding-bottom: 3rem !important;
+    max-width: 1360px !important;
 }
 
-/* Typography & widget label contrast across Light and Dark modes */
+/* ── Global Typography & Contrast ──────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary) !important;
+    font-family: var(--font-sans) !important;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+}
+
+p, span, li, div {
+    font-family: var(--font-sans);
+}
+
 .stMarkdown,
 .stMarkdown p,
 .stMarkdown li,
@@ -30,209 +60,484 @@
 [data-testid="stWidgetLabel"] label,
 label {
     color: var(--text-primary) !important;
+    font-size: 0.88rem;
+    font-weight: 600;
 }
 
 .stCaption,
 [data-testid="stCaptionContainer"],
 [data-testid="stCaptionContainer"] p {
-    color: var(--text-secondary) !important;
+    color: var(--text-muted) !important;
+    font-size: 0.78rem;
+    line-height: 1.45;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    color: var(--text-primary) !important;
-    letter-spacing: -0.01em;
-}
-
-/* Inline code pills (AI Engine, Model, Storage, Source tags) */
+/* Code Pills & Badges */
 code,
 .stMarkdown code,
 .workspace-card code {
+    font-family: var(--font-mono) !important;
     background-color: var(--code-bg) !important;
     color: var(--code-fg) !important;
     border: 1px solid var(--border-subtle);
-    padding: 0.12rem 0.42rem;
-    border-radius: 5px;
+    padding: 0.15rem 0.45rem;
+    border-radius: 6px;
     font-size: 0.82em;
+    font-weight: 500;
 }
 
-/* Sidebar styling */
+/* ── Left Sidebar (Dark Enterprise Panel) ──────────────────────────────── */
 [data-testid="stSidebar"] {
     background-color: var(--bg-sidebar) !important;
     border-right: 1px solid var(--border-subtle) !important;
 }
 
-[data-testid="stSidebar"] p,
-[data-testid="stSidebar"] span,
-[data-testid="stSidebar"] label,
-[data-testid="stSidebar"] div {
-    color: var(--text-primary);
+[data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {
+    padding: 1.25rem 1rem !important;
 }
 
+/* Sidebar Brand Header */
 .sidebar-brand {
-    padding: 0.35rem 0 0.85rem 0;
+    padding-bottom: 1.1rem;
     border-bottom: 1px solid var(--border-subtle);
-    margin-bottom: 0.85rem;
+    margin-bottom: 1rem;
 }
 
 .sidebar-brand-pill {
     display: inline-block;
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     color: var(--accent) !important;
     background-color: var(--accent-soft);
-    padding: 0.16rem 0.5rem;
-    border-radius: 6px;
-    margin-bottom: 0.4rem;
+    border: 1px solid var(--accent-glow);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
 }
 
 .sidebar-brand-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-primary) !important;
-    margin: 0;
+    font-size: 1.15rem !important;
+    font-weight: 800 !important;
+    color: var(--sidebar-text) !important;
+    margin: 0 !important;
     line-height: 1.25;
+    letter-spacing: -0.02em;
 }
 
 .sidebar-brand-sub {
-    font-size: 0.8rem;
-    color: var(--text-secondary) !important;
-    margin: 0.2rem 0 0 0;
+    font-size: 0.76rem !important;
+    color: var(--sidebar-text-muted) !important;
+    margin: 0.25rem 0 0 0 !important;
+    font-weight: 400;
 }
 
-/* Sleek sidebar navigation pills */
-[data-testid="stSidebar"] div[role="radiogroup"] {
-    gap: 0.3rem;
+/* Sidebar Section Headers / Captions */
+[data-testid="stSidebar"] .stCaption,
+[data-testid="stSidebar"] [data-testid="stCaptionContainer"] p {
+    color: var(--sidebar-text-muted) !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.35rem;
 }
+
+/* ── Navigation Items (Sidebar Radio) ──────────────────────────────────── */
+[data-testid="stSidebar"] div[role="radiogroup"] {
+    gap: 0.35rem;
+}
+
 [data-testid="stSidebar"] div[role="radiogroup"] > label {
     background-color: transparent;
     border: 1px solid transparent;
-    border-radius: 8px;
-    padding: 0.48rem 0.75rem;
+    border-radius: 9px;
+    padding: 0.55rem 0.85rem;
     width: 100%;
     cursor: pointer;
-}
-[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
-    background-color: var(--bg-elevated);
-    border-color: var(--border-subtle);
-}
-[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
-    background-color: var(--accent-soft);
-    border-color: var(--accent);
-    font-weight: 600;
+    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
 }
 
-/* Inputs, TextAreas, Selectboxes, Dropdown Popovers, Expanders */
+[data-testid="stSidebar"] div[role="radiogroup"] > label p,
+[data-testid="stSidebar"] div[role="radiogroup"] > label span,
+[data-testid="stSidebar"] div[role="radiogroup"] > label div {
+    color: var(--sidebar-text-muted) !important;
+    font-size: 0.88rem !important;
+    font-weight: 500;
+}
+
+[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-color: var(--border-subtle);
+}
+
+[data-testid="stSidebar"] div[role="radiogroup"] > label:hover p,
+[data-testid="stSidebar"] div[role="radiogroup"] > label:hover span {
+    color: var(--sidebar-text) !important;
+}
+
+/* Active Navigation Item */
+[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
+    background-color: var(--sidebar-nav-active-bg) !important;
+    border-color: var(--sidebar-nav-active-border) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) p,
+[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) span {
+    color: var(--sidebar-nav-active-color) !important;
+    font-weight: 700 !important;
+}
+
+/* ── Radio Controls (Universal Fix for Light & Dark Mode) ─────────────── */
+/* Ensure radio circle container is always visible */
+[data-baseweb="radio"] {
+    align-items: center;
+}
+
+/* Outer radio ring */
+[data-baseweb="radio"] > div:first-child,
+div[role="radiogroup"] label > div:first-child {
+    border-color: var(--radio-border) !important;
+    background-color: var(--input-bg) !important;
+    border-width: 2px !important;
+    border-style: solid !important;
+    transition: all 0.15s ease-in-out;
+}
+
+/* Outer radio ring when checked */
+[data-baseweb="radio"]:has(input:checked) > div:first-child,
+div[role="radiogroup"] label:has(input:checked) > div:first-child {
+    border-color: var(--radio-checked) !important;
+    background-color: var(--input-bg) !important;
+}
+
+/* Inner dot when checked */
+[data-baseweb="radio"] input:checked + div > div,
+[data-baseweb="radio"]:has(input:checked) > div:first-child > div,
+div[role="radiogroup"] label:has(input:checked) > div:first-child > div {
+    background-color: var(--radio-checked) !important;
+}
+
+/* Radio label text */
+[data-baseweb="radio"] label,
+[data-baseweb="radio"] div:last-child {
+    color: var(--text-primary) !important;
+}
+
+/* ── Form Inputs, Textarea, Selectbox ─────────────────────────────────── */
 .stTextInput input,
 .stTextArea textarea,
 [data-baseweb="input"],
 [data-baseweb="input"] > div,
 [data-baseweb="base-input"],
-[data-baseweb="select"] > div,
-[data-baseweb="select"] > div > div {
+[data-baseweb="select"] > div {
     background-color: var(--input-bg) !important;
     color: var(--text-primary) !important;
     border-color: var(--border-subtle) !important;
+    border-radius: 9px !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.9rem !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 
+.stTextInput input::placeholder,
+.stTextArea textarea::placeholder {
+    color: var(--text-muted) !important;
+    opacity: 1 !important;
+}
+
+.stTextInput input:focus,
+.stTextArea textarea:focus,
+[data-baseweb="input"]:focus-within,
+[data-baseweb="select"] > div:focus-within {
+    border-color: var(--border-focus) !important;
+    box-shadow: 0 0 0 3px var(--accent-glow) !important;
+}
+
+/* Selectbox text and chevron */
 [data-baseweb="select"] span,
+[data-baseweb="select"] div {
+    color: var(--text-primary) !important;
+}
 [data-baseweb="select"] svg {
-    color: var(--text-primary) !important;
-    fill: var(--text-primary) !important;
-}
-
-[data-baseweb="popover"],
-[data-baseweb="popover"] ul,
-[role="listbox"],
-[role="listbox"] li {
-    background-color: var(--bg-card) !important;
-    color: var(--text-primary) !important;
-}
-
-[role="listbox"] li:hover {
-    background-color: var(--accent-soft) !important;
-}
-
-[data-testid="stExpander"] {
-    background-color: var(--bg-card) !important;
-    border: 1px solid var(--border-subtle) !important;
-    border-radius: 10px !important;
-}
-
-[data-testid="stExpander"] summary,
-[data-testid="stExpander"] summary p {
-    color: var(--text-primary) !important;
-}
-
-[data-testid="stFileUploaderDropzone"] {
-    background-color: var(--bg-card) !important;
-    border: 1px dashed var(--border-subtle) !important;
-    border-radius: 10px !important;
-    color: var(--text-primary) !important;
-}
-
-/* Tabs */
-button[data-baseweb="tab"],
-button[data-baseweb="tab"] p,
-button[data-baseweb="tab"] span {
+    fill: var(--text-secondary) !important;
     color: var(--text-secondary) !important;
 }
-button[data-baseweb="tab"][aria-selected="true"],
-button[data-baseweb="tab"][aria-selected="true"] p,
-button[data-baseweb="tab"][aria-selected="true"] span {
-    color: var(--accent) !important;
-    font-weight: 600;
+
+/* Dropdown popover listbox (CRITICAL FOR DARK MODE CONTRAST) */
+[data-baseweb="popover"],
+[data-baseweb="popover"] > div,
+[role="listbox"],
+[data-baseweb="menu"] {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: 10px !important;
+    box-shadow: var(--shadow-card) !important;
 }
 
-/* Secondary buttons */
+[role="listbox"] li,
+[data-baseweb="menu"] li {
+    background-color: transparent !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.88rem !important;
+    padding: 0.55rem 0.85rem !important;
+    transition: background-color 0.15s ease;
+}
+
+[role="listbox"] li:hover,
+[role="listbox"] li[aria-selected="true"],
+[data-baseweb="menu"] li:hover {
+    background-color: var(--accent-soft) !important;
+    color: var(--accent) !important;
+}
+
+/* ── Buttons (Primary & Secondary) ────────────────────────────────────── */
+.stButton > button[kind="primary"] {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%) !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 9px !important;
+    padding: 0.55rem 1.25rem !important;
+    font-weight: 600 !important;
+    font-family: var(--font-sans) !important;
+    letter-spacing: 0.01em !important;
+    box-shadow: 0 2px 6px var(--accent-glow) !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.stButton > button[kind="primary"]:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 16px var(--accent-glow) !important;
+    filter: brightness(1.05) !important;
+}
+
+.stButton > button[kind="primary"]:active {
+    transform: translateY(0) !important;
+}
+
+.stButton > button[kind="secondary"],
 button[kind="secondary"] {
-    background-color: var(--bg-card) !important;
+    background-color: var(--bg-elevated) !important;
     color: var(--text-primary) !important;
     border: 1px solid var(--border-subtle) !important;
+    border-radius: 9px !important;
+    padding: 0.55rem 1.15rem !important;
+    font-weight: 500 !important;
+    font-family: var(--font-sans) !important;
+    transition: all 0.18s ease !important;
 }
+
+.stButton > button[kind="secondary"]:hover,
 button[kind="secondary"]:hover {
     border-color: var(--accent) !important;
     color: var(--accent) !important;
+    background-color: var(--accent-soft) !important;
 }
 
-/* Equal-height KPI Metric Card */
+/* Download Buttons */
+[data-testid="stDownloadButton"] > button {
+    border-radius: 9px !important;
+    font-weight: 600 !important;
+    font-family: var(--font-sans) !important;
+    transition: all 0.2s ease !important;
+}
+
+/* ── Tabs Styling ─────────────────────────────────────────────────────── */
+button[data-baseweb="tab"] {
+    color: var(--text-muted) !important;
+    font-weight: 600 !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.88rem !important;
+    padding: 0.65rem 1rem !important;
+    transition: color 0.15s ease !important;
+}
+
+button[data-baseweb="tab"]:hover {
+    color: var(--text-primary) !important;
+}
+
+button[data-baseweb="tab"][aria-selected="true"] {
+    color: var(--accent) !important;
+}
+
+[data-baseweb="tab-highlight"] {
+    background-color: var(--accent) !important;
+    height: 3px !important;
+    border-radius: 3px 3px 0 0 !important;
+}
+
+[data-baseweb="tab-border"] {
+    background-color: var(--border-subtle) !important;
+}
+
+/* ── Expanders ────────────────────────────────────────────────────────── */
+[data-testid="stExpander"] {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    margin-bottom: 0.75rem;
+}
+
+[data-testid="stExpander"] summary {
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    padding: 0.75rem 1rem !important;
+}
+
+[data-testid="stExpander"] summary:hover {
+    color: var(--accent) !important;
+}
+
+[data-testid="stExpander"] summary svg {
+    fill: var(--text-secondary) !important;
+}
+
+/* ── File Uploader Dropzone ────────────────────────────────────────────── */
+[data-testid="stFileUploaderDropzone"] {
+    background-color: var(--bg-elevated) !important;
+    border: 2px dashed var(--border-subtle) !important;
+    border-radius: 12px !important;
+    padding: 1.5rem !important;
+    color: var(--text-secondary) !important;
+    transition: border-color 0.2s ease;
+}
+
+[data-testid="stFileUploaderDropzone"]:hover {
+    border-color: var(--accent) !important;
+}
+
+/* ── DataFrames & Tables ──────────────────────────────────────────────── */
+[data-testid="stDataFrame"],
+.stDataFrame {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: 10px !important;
+    overflow: hidden;
+}
+
+/* ── Alerts & Notifications ───────────────────────────────────────────── */
+[data-testid="stAlert"] {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-subtle) !important;
+    border-left-width: 4px !important;
+    border-radius: 10px !important;
+    color: var(--text-primary) !important;
+    padding: 0.85rem 1rem !important;
+}
+
+[data-testid="stAlert"] p,
+[data-testid="stAlert"] span {
+    color: var(--text-primary) !important;
+}
+
+/* ── Page Header Component ────────────────────────────────────────────── */
+.page-header {
+    margin-bottom: 1.35rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.page-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    background-color: var(--accent-soft);
+    border: 1px solid var(--accent-glow);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    margin-bottom: 0.45rem;
+}
+
+.page-title {
+    font-size: 1.65rem !important;
+    font-weight: 800 !important;
+    color: var(--text-primary) !important;
+    margin: 0 !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.025em !important;
+}
+
+.page-subtitle {
+    font-size: 0.88rem !important;
+    color: var(--text-secondary) !important;
+    margin-top: 0.35rem !important;
+    margin-bottom: 0 !important;
+    line-height: 1.5 !important;
+    max-width: 760px;
+}
+
+/* ── KPI Metric Cards ─────────────────────────────────────────────────── */
 .kpi-card {
     background-color: var(--bg-card);
     border: 1px solid var(--border-subtle);
-    border-top: 3px solid var(--accent);
-    border-radius: 10px;
-    padding: 1rem 1.15rem;
-    min-height: 126px;
+    border-top: 3px solid var(--card-top-border);
+    border-radius: 12px;
+    padding: 1.1rem 1.2rem;
+    min-height: 132px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     box-shadow: var(--shadow-card);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.kpi-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+}
+
+.kpi-icon {
+    font-size: 1.25rem;
+    line-height: 1;
 }
 
 .kpi-label {
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-secondary);
-    margin-bottom: 0.35rem;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
 }
 
 .kpi-value {
-    font-size: 1.85rem;
-    font-weight: 700;
+    font-size: 1.9rem;
+    font-weight: 800;
     color: var(--text-primary);
-    line-height: 1.1;
+    line-height: 1.15;
     margin-bottom: 0.25rem;
+    letter-spacing: -0.03em;
 }
 
 .kpi-sub {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--text-secondary);
+    font-weight: 400;
 }
 
-/* Section & Onboarding Cards */
+/* ── Section & Feature Cards ──────────────────────────────────────────── */
 .section-card {
     background-color: var(--bg-card);
     border: 1px solid var(--border-subtle);
@@ -243,42 +548,51 @@ button[kind="secondary"]:hover {
 }
 
 .onboarding-banner {
-    background: linear-gradient(135deg, var(--accent-soft) 0%, var(--bg-card) 100%);
-    border: 1px solid var(--border-subtle);
-    border-radius: 12px;
-    padding: 1.4rem 1.5rem;
-    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--accent) 0%, #1D4ED8 100%);
+    border-radius: 14px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.25rem;
+    color: #FFFFFF !important;
     box-shadow: var(--shadow-card);
 }
 
 .onboarding-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #FFFFFF !important;
     margin: 0 0 0.35rem 0;
+    letter-spacing: -0.02em;
 }
 
 .onboarding-desc {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.9) !important;
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.55;
+    max-width: 720px;
 }
 
 .feature-card {
     background-color: var(--bg-card);
     border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--accent);
     border-radius: 10px;
-    padding: 1rem 1.1rem;
-    min-height: 112px;
+    padding: 1rem 1.15rem;
+    min-height: 114px;
     box-shadow: var(--shadow-card);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
 }
 
 .feature-card-title {
     font-size: 0.92rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.35rem;
 }
 
 .feature-card-body {
@@ -287,13 +601,16 @@ button[kind="secondary"]:hover {
     line-height: 1.45;
 }
 
-/* Status Pills */
+/* ── Status Pills & Badges ────────────────────────────────────────────── */
 .status-badge {
-    display: inline-block;
-    padding: 0.2rem 0.62rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.22rem 0.65rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
     line-height: 1.2;
 }
 
@@ -321,46 +638,71 @@ button[kind="secondary"]:hover {
     border: 1px solid var(--accent);
 }
 
-/* Workspace status mini-box in sidebar */
+/* ── Workspace Status Card (Sidebar) ──────────────────────────────────── */
 .workspace-card {
     background-color: var(--bg-elevated);
     border: 1px solid var(--border-subtle);
     border-radius: 10px;
     padding: 0.75rem 0.85rem;
-    font-size: 0.82rem;
-    line-height: 1.75;
-    color: var(--text-primary);
+    font-size: 0.78rem;
+    line-height: 1.8;
 }
 
-/* Page Header */
-.page-header {
-    margin-bottom: 1.1rem;
+.ws-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.2rem;
 }
 
-.page-eyebrow {
-    display: inline-block;
-    font-size: 0.72rem;
+.ws-label {
+    color: var(--sidebar-text-muted) !important;
+    font-weight: 600;
+}
+
+/* ── Section Title Styling ────────────────────────────────────────────── */
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.05rem;
     font-weight: 700;
+    color: var(--text-primary);
+    margin: 1.1rem 0 0.75rem 0;
+}
+
+.section-heading-icon {
+    font-size: 1.1rem;
+}
+
+/* ── Step Indicator Box (New Analysis) ────────────────────────────────── */
+.step-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--accent);
-    margin-bottom: 0.25rem;
+    background-color: var(--accent-soft);
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    margin-right: 0.4rem;
 }
 
-.page-title {
-    font-size: 1.7rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0;
-    line-height: 1.2;
-}
-
-.page-subtitle {
-    font-size: 0.92rem;
-    color: var(--text-secondary);
-    margin-top: 0.3rem;
-}
-
-hr {
+/* ── Dividers ─────────────────────────────────────────────────────────── */
+hr,
+[data-testid="stDivider"] {
     border-color: var(--border-subtle) !important;
+    margin: 1.25rem 0 !important;
+}
+
+/* ── Progress Bar ─────────────────────────────────────────────────────── */
+.stProgress > div > div > div > div {
+    background-color: var(--accent) !important;
+    border-radius: 20px !important;
+}
+
+/* ── Slider ───────────────────────────────────────────────────────────── */
+[data-baseweb="slider"] div {
+    color: var(--text-primary) !important;
 }

@@ -6,7 +6,7 @@ import streamlit as st
 
 from database.db_manager import DatabaseManager
 from services.report_generator import generate_pdf_report
-from ui.components.metric_cards import render_page_header
+from ui.components.metric_cards import render_page_header, render_section_heading
 
 
 def render_history(
@@ -81,14 +81,14 @@ def render_history(
 
     csv_bytes = display_df.to_csv(index=False).encode("utf-8")
     st.download_button(
-        label="Export Filtered History (CSV)",
+        label="📥 Export Filtered History (CSV)",
         data=csv_bytes,
         file_name="requirement_analyses_history.csv",
         mime="text/csv",
     )
 
     st.divider()
-    st.markdown("#### Quick Actions on Saved Analysis")
+    render_section_heading("Quick Actions on Saved Analysis", "⚡")
     options = {
         int(row["id"]): f"#{row['id']} — {row['project_title']} ({row['client_name']}) • {row['completeness_score']}%"
         for _, row in df.iterrows()
@@ -99,23 +99,23 @@ def render_history(
         format_func=lambda aid: options[aid],
     )
 
-    a_col1, a_col2, a_col3 = st.columns([1.4, 1.4, 1.2])
+    a_col1, a_col2, a_col3 = st.columns([1.5, 1.5, 1.2], vertical_alignment="center")
     with a_col1:
-        if st.button("View Full Project Plan", type="primary", use_container_width=True):
+        if st.button("📑 View Full Project Plan", type="primary", use_container_width=True):
             navigate_to("Analysis Details", selected_id)
     with a_col2:
         selected_record = db.get_analysis(selected_id)
         if selected_record:
             pdf_bytes = generate_pdf_report(selected_record)
             st.download_button(
-                label="Download PDF Report",
+                label="📥 Download PDF Report",
                 data=pdf_bytes,
                 file_name=f"analysis_{selected_id}_report.pdf",
                 mime="application/pdf",
                 use_container_width=True,
             )
     with a_col3:
-        if st.button("Delete Selected", use_container_width=True):
+        if st.button("🗑️ Delete Selected", use_container_width=True):
             st.session_state["history_confirm_delete_id"] = selected_id
 
     if st.session_state.get("history_confirm_delete_id") == selected_id:

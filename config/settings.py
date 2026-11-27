@@ -15,6 +15,26 @@ ENV_FILE_PATH = BASE_DIR / ".env"
 # Load environment variables from .env in project root if present.
 load_dotenv(dotenv_path=ENV_FILE_PATH, override=False)
 
+
+def _load_streamlit_secrets() -> None:
+    """Copy Streamlit Cloud secrets into os.environ so the rest of the app reads them transparently.
+    This is a no-op when running locally or when secrets are not configured."""
+    try:
+        import streamlit as st  # noqa: PLC0415
+        secrets = st.secrets  # type: ignore[attr-defined]
+        for key in (
+            "LLM_PROVIDER", "OPENAI_API_KEY", "OPENAI_MODEL", "OPENAI_BASE_URL",
+            "GEMINI_API_KEY", "GEMINI_MODEL", "DATABASE_PATH",
+            "MAX_UPLOAD_SIZE_MB", "LOG_LEVEL",
+        ):
+            if key in secrets and key not in os.environ:
+                os.environ[key] = str(secrets[key])
+    except Exception:  # noqa: BLE001
+        pass  # Not running on Streamlit Cloud or secrets not yet configured.
+
+
+_load_streamlit_secrets()
+
 ALLOWED_UPLOAD_EXTENSIONS = (".pdf", ".docx", ".txt")
 SUPPORTED_PROVIDERS = ("openai", "gemini", "openai_compatible", "offline_demo")
 

@@ -13,10 +13,10 @@ def _chart_theme(dark_mode: bool) -> Dict[str, str]:
     """Return consistent chart colors for Light or Dark mode."""
     if dark_mode:
         return {
-            "text": "#F1F5F9",
+            "text": "#F8FAFC",
             "muted": "#94A3B8",
             "grid": "#334155",
-            "gauge_bg": "#1E293B",
+            "gauge_bg": "#151F32",
             "bar": "#3B82F6",
             "bar_border": "#60A5FA",
         }

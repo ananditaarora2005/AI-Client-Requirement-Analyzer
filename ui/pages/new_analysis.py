@@ -9,7 +9,7 @@ from config.settings import Settings, save_provider_configuration
 from database.db_manager import DatabaseError, DatabaseManager
 from services.ai_analyzer import AIAnalysisError, analyze_requirements
 from services.document_parser import DocumentParseError, ParsedDocument, parse_uploaded_document
-from ui.components.metric_cards import render_page_header
+from ui.components.metric_cards import render_page_header, render_section_heading
 from utils.validators import ValidationError
 
 
@@ -64,6 +64,7 @@ def render_new_analysis(
     st.session_state.setdefault("input_source_type", "raw_text")
     st.session_state.setdefault("input_source_filename", None)
 
+    render_section_heading("Step 1: Project Metadata", "📋")
     meta_col1, meta_col2, meta_col3 = st.columns([2, 1.5, 1.5])
     with meta_col1:
         project_title = st.text_input(
@@ -80,12 +81,14 @@ def render_new_analysis(
     with meta_col3:
         engagement_type = st.selectbox("Engagement Type", options=ENGAGEMENT_TYPES)
 
-    tab_paste, tab_upload = st.tabs(["Paste Text / Email / Transcript", "Upload Document (PDF / DOCX / TXT)"])
+    st.markdown("<div style='height: 0.5rem;'></div>", unsafe_allow_html=True)
+    render_section_heading("Step 2: Intake Client Specifications", "📥")
+    tab_paste, tab_upload = st.tabs(["📝 Paste Text / Email / Transcript", "📄 Upload Document (PDF / DOCX / TXT)"])
 
     with tab_paste:
-        sample_col1, sample_col2, sample_col3 = st.columns([1.4, 1.4, 2.2])
+        sample_col1, sample_col2, sample_col3 = st.columns([1.5, 1.5, 1.5])
         with sample_col1:
-            if st.button("Load Sample 1 (FinTech Brief)", use_container_width=True):
+            if st.button("📁 Load FinTech Brief", use_container_width=True):
                 st.session_state["input_project_title"] = "FinFlow B2B Expense Portal"
                 st.session_state["input_client_name"] = "FinFlow Logistics"
                 st.session_state["input_raw_text"] = _load_sample_text(
@@ -95,7 +98,7 @@ def render_new_analysis(
                 st.session_state["input_source_filename"] = None
                 st.rerun()
         with sample_col2:
-            if st.button("Load Sample 2 (Clinic Notes)", use_container_width=True):
+            if st.button("🏥 Load Healthcare Chat", use_container_width=True):
                 st.session_state["input_project_title"] = "CareBridge Patient Booking App"
                 st.session_state["input_client_name"] = "CareBridge Clinic"
                 st.session_state["input_raw_text"] = _load_sample_text(
@@ -105,7 +108,7 @@ def render_new_analysis(
                 st.session_state["input_source_filename"] = None
                 st.rerun()
         with sample_col3:
-            if st.button("Clear Input Fields", use_container_width=True):
+            if st.button("🧹 Clear Input Fields", use_container_width=True):
                 st.session_state["input_project_title"] = ""
                 st.session_state["input_client_name"] = ""
                 st.session_state["input_raw_text"] = ""
@@ -116,7 +119,7 @@ def render_new_analysis(
         raw_text = st.text_area(
             "Client Requirement Text *",
             key="input_raw_text",
-            height=290,
+            height=280,
             placeholder=(
                 "Paste unstructured client conversation notes, discovery call transcript, "
                 "RFP excerpts, or requirement emails here..."
@@ -124,9 +127,14 @@ def render_new_analysis(
         )
         char_count = len(raw_text.strip())
         word_count = len(raw_text.strip().split()) if char_count else 0
-        st.caption(
-            f"Length: **{char_count:,} characters** ({word_count:,} words) • "
-            f"Minimum required: {settings.min_input_chars} characters"
+        min_c = settings.min_input_chars
+        status_color = "var(--accent)" if char_count >= min_c else "var(--text-muted)"
+        st.markdown(
+            f"<div style='font-size: 0.8rem; color: {status_color}; margin-top: 0.25rem;'>"
+            f"Length: <strong>{char_count:,} characters</strong> ({word_count:,} words) • "
+            f"Minimum required: {min_c} characters"
+            f"</div>",
+            unsafe_allow_html=True,
         )
 
     with tab_upload:
@@ -160,10 +168,11 @@ def render_new_analysis(
                 st.error(f"Document processing error: {exc}")
 
     st.divider()
-    run_col1, run_col2 = st.columns([2, 3], vertical_alignment="center")
+    render_section_heading("Step 3: Execute AI Architecture Analysis", "⚡")
+    run_col1, run_col2 = st.columns([2.2, 2.8], vertical_alignment="center")
     with run_col1:
         analyze_clicked = st.button(
-            "Run AI Requirement Analysis",
+            "⚡ Run AI Requirement Analysis",
             type="primary",
             use_container_width=True,
         )

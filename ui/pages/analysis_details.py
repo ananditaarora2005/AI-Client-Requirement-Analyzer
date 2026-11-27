@@ -16,6 +16,7 @@ from ui.components.metric_cards import (
     KPICardData,
     render_kpi_row,
     render_page_header,
+    render_section_heading,
     status_badge_html,
 )
 from ui.components.tables import (
@@ -118,21 +119,25 @@ def render_analysis_details(
             "label": "Completeness Score",
             "value": f"{record.completeness_score:.1f}%",
             "subtitle": f"Base {record.score_breakdown.base_weighted_score:.1f}% − {record.score_breakdown.gap_penalty:.1f} gap penalty",
+            "icon": "🎯",
         },
         {
             "label": "Functional Specs",
             "value": str(len(record.functional_requirements)),
             "subtitle": f"{sum(1 for f in record.functional_requirements if f.priority == 'Must')} Must-Have items",
+            "icon": "📋",
         },
         {
             "label": "Non-Functional Specs",
             "value": str(len(record.non_functional_requirements)),
             "subtitle": f"{sum(1 for n in record.non_functional_requirements if n.priority == 'High')} High-priority SLAs",
+            "icon": "🛡️",
         },
         {
             "label": "Estimated Timeline",
             "value": f"{total_weeks} Weeks",
             "subtitle": f"{len(record.milestones)} delivery phases  •  {len(record.missing_information)} open gaps",
+            "icon": "⏱️",
         },
     ]
     render_kpi_row(kpi_cards)
@@ -140,28 +145,28 @@ def render_analysis_details(
 
     tab_overview, tab_reqs, tab_stack, tab_gaps, tab_raw = st.tabs(
         [
-            "Overview & Completeness",
-            "Functional & Non-Functional",
-            "Tech Stack & Timeline",
-            "Missing Info & Clarifications",
-            "Original Input",
+            "📊 Overview & Completeness",
+            "📋 Functional & Non-Functional",
+            "🛠️ Tech Stack & Timeline",
+            "⚠️ Missing Info & Clarifications",
+            "📄 Original Input",
         ]
     )
 
     with tab_overview:
-        st.markdown("#### Executive Summary")
+        render_section_heading("Executive Summary", "📌")
         st.write(record.executive_summary)
 
         meta_c1, meta_c2 = st.columns(2)
         with meta_c1:
-            st.markdown("#### Target Users & Personas")
+            render_section_heading("Target Users & Personas", "👥")
             if record.target_users:
                 for user in record.target_users:
                     st.markdown(f"- {user}")
             else:
                 st.caption("No explicit user personas extracted.")
         with meta_c2:
-            st.markdown("#### Engineering Assumptions")
+            render_section_heading("Engineering Assumptions", "💡")
             if record.assumptions:
                 for assumption in record.assumptions:
                     st.markdown(f"- {assumption}")
@@ -169,7 +174,7 @@ def render_analysis_details(
                 st.caption("No assumptions recorded.")
 
         st.divider()
-        st.markdown("#### Requirement Completeness Breakdown")
+        render_section_heading("Requirement Completeness Breakdown (7 Dimensions)", "📈")
         g_col, b_col = st.columns([1.2, 2.2])
         with g_col:
             st.plotly_chart(
@@ -195,7 +200,7 @@ def render_analysis_details(
         st.dataframe(pd.DataFrame(dim_rows), use_container_width=True, hide_index=True)
 
     with tab_reqs:
-        st.markdown("#### Functional Requirements")
+        render_section_heading("Functional Requirements", "📋")
         fr_df = functional_reqs_to_df(record.functional_requirements)
         if not fr_df.empty:
             priority_filter = st.multiselect(
@@ -209,7 +214,7 @@ def render_analysis_details(
             st.caption("No functional requirements extracted.")
 
         st.divider()
-        st.markdown("#### Non-Functional Requirements")
+        render_section_heading("Non-Functional Requirements", "🛡️")
         nfr_df = non_functional_reqs_to_df(record.non_functional_requirements)
         if not nfr_df.empty:
             categories = sorted(nfr_df["Category"].unique().tolist())
@@ -224,7 +229,7 @@ def render_analysis_details(
             st.caption("No non-functional requirements extracted.")
 
     with tab_stack:
-        st.markdown("#### Recommended Technology Stack")
+        render_section_heading("Recommended Technology Stack", "🛠️")
         stack_df = tech_stack_to_df(record.tech_stack)
         if not stack_df.empty:
             st.dataframe(stack_df, use_container_width=True, hide_index=True)
@@ -232,7 +237,7 @@ def render_analysis_details(
             st.caption("No tech stack recommendations available.")
 
         st.divider()
-        st.markdown("#### Project Timeline & Milestones")
+        render_section_heading("Project Timeline & Milestones", "🗓️")
         if record.milestones:
             st.plotly_chart(
                 milestone_gantt_chart(record.milestones, dark_mode=dark_mode),
@@ -243,12 +248,13 @@ def render_analysis_details(
             st.caption("No project milestones generated.")
 
     with tab_gaps:
-        st.markdown("#### Missing Information & Ambiguities")
+        render_section_heading("Missing Information & Scope Ambiguities", "⚠️")
         gap_df = missing_info_to_df(record.missing_information)
         if not gap_df.empty:
             st.dataframe(gap_df, use_container_width=True, hide_index=True)
 
-            st.markdown("#### Client Clarification Email Draft")
+            st.markdown("<div style='height: 0.5rem;'></div>", unsafe_allow_html=True)
+            render_section_heading("Client Clarification Email Draft", "✉️")
             st.code(
                 f"Subject: Follow-up Questions – {record.project_title}\n\n"
                 f"Hi {record.client_name} Team,\n\n"
@@ -266,7 +272,7 @@ def render_analysis_details(
             st.success("No major missing information gaps detected.")
 
     with tab_raw:
-        st.markdown("#### Source Client Requirement Input")
+        render_section_heading("Source Client Requirement Input", "📄")
         st.text_area(
             "Extracted / Submitted Raw Text",
             value=record.raw_input_text,

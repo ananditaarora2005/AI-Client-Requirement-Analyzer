@@ -10,7 +10,12 @@ from ui.components.charts import (
     dashboard_priority_chart,
     dashboard_readiness_chart,
 )
-from ui.components.metric_cards import KPICardData, render_kpi_row, render_page_header
+from ui.components.metric_cards import (
+    KPICardData,
+    render_kpi_row,
+    render_page_header,
+    render_section_heading,
+)
 
 
 def render_dashboard(
@@ -19,14 +24,14 @@ def render_dashboard(
     dark_mode: bool = False,
 ) -> None:
     """Render the main SaaS overview dashboard."""
-    header_col, action_col = st.columns([4.2, 1.3], vertical_alignment="center")
+    header_col, action_col = st.columns([3.8, 1.2], vertical_alignment="center")
     with header_col:
         render_page_header(
             "Requirement Intelligence Dashboard",
             "Monitor requirement completeness, extracted specifications, and delivery readiness across client projects.",
         )
     with action_col:
-        if st.button("+ New Analysis", type="primary", use_container_width=True):
+        if st.button("⚡ New Analysis", type="primary", use_container_width=True):
             navigate_to("New Analysis", None)
 
     metrics = db.get_dashboard_metrics()
@@ -37,25 +42,29 @@ def render_dashboard(
             "label": "Total Analyses",
             "value": str(metrics["total_analyses"]),
             "subtitle": "Saved client project plans",
+            "icon": "📁",
         },
         {
             "label": "Avg Completeness",
             "value": f"{metrics['avg_completeness']:.1f}%",
             "subtitle": f"{metrics['high_gaps']} high-severity gaps open",
+            "icon": "🎯",
         },
         {
             "label": "Requirements",
             "value": str(total_reqs),
             "subtitle": f"{metrics['total_frs']} FRs  •  {metrics['total_nfrs']} NFRs",
+            "icon": "📋",
         },
         {
             "label": "Avg Timeline",
             "value": f"{metrics['avg_duration_weeks']:.1f} wks",
             "subtitle": "Across phased delivery plans",
+            "icon": "⏱️",
         },
     ]
     render_kpi_row(cards)
-    st.markdown("<div style='height: 1.1rem;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 0.85rem;'></div>", unsafe_allow_html=True)
 
     if metrics["total_analyses"] == 0:
         st.markdown(
@@ -115,7 +124,7 @@ def render_dashboard(
 
     chart_col1, chart_col2, chart_col3 = st.columns(3)
     with chart_col1:
-        st.markdown("#### Functional Priority Mix")
+        render_section_heading("Functional Priority Mix", "📊")
         fr_df = metrics["fr_priority_df"]
         if not fr_df.empty:
             st.plotly_chart(dashboard_priority_chart(fr_df, dark_mode=dark_mode), use_container_width=True)
@@ -123,7 +132,7 @@ def render_dashboard(
             st.caption("No functional requirement data available.")
 
     with chart_col2:
-        st.markdown("#### Non-Functional Categories")
+        render_section_heading("Non-Functional Categories", "🛡️")
         nfr_df = metrics["nfr_category_df"]
         if not nfr_df.empty:
             st.plotly_chart(dashboard_nfr_chart(nfr_df, dark_mode=dark_mode), use_container_width=True)
@@ -131,7 +140,7 @@ def render_dashboard(
             st.caption("No non-functional requirement data available.")
 
     with chart_col3:
-        st.markdown("#### Project Readiness")
+        render_section_heading("Project Readiness", "🎯")
         readiness_df = metrics["readiness_df"]
         if not readiness_df.empty:
             st.plotly_chart(dashboard_readiness_chart(readiness_df, dark_mode=dark_mode), use_container_width=True)
@@ -139,7 +148,7 @@ def render_dashboard(
             st.caption("No readiness data available.")
 
     st.divider()
-    st.markdown("#### Recent Requirement Analyses")
+    render_section_heading("Recent Requirement Analyses", "📑")
     recent_df = db.list_analyses_df()
     display_df = recent_df.head(8)[
         [
@@ -174,7 +183,7 @@ def render_dashboard(
         f"#{row['id']} — {row['project_title']} ({row['client_name']})": int(row["id"])
         for _, row in recent_df.head(15).iterrows()
     }
-    jump_col1, jump_col2 = st.columns([3.5, 1.2])
+    jump_col1, jump_col2 = st.columns([3.8, 1.2], vertical_alignment="center")
     with jump_col1:
         selected_label = st.selectbox(
             "Quick-open project plan",
@@ -182,5 +191,5 @@ def render_dashboard(
             label_visibility="collapsed",
         )
     with jump_col2:
-        if st.button("Open Project Plan", use_container_width=True):
+        if st.button("Open Project Plan", type="primary", use_container_width=True):
             navigate_to("Analysis Details", options[selected_label])

@@ -21,57 +21,90 @@ from ui.pages.new_analysis import render_new_analysis
 
 PAGES = ["Dashboard", "New Analysis", "Analysis Details", "History"]
 
+PAGE_ICONS = {
+    "Dashboard": "📊  Dashboard",
+    "New Analysis": "⚡  New Analysis",
+    "Analysis Details": "📑  Analysis Details",
+    "History": "🕒  History",
+}
+
 THEME_VARS = {
     "Light": """
     :root {
-        --bg-canvas: #f8fafc;
-        --bg-card: #ffffff;
-        --bg-sidebar: #ffffff;
-        --bg-elevated: #f1f5f9;
-        --border-subtle: #e2e8f0;
-        --text-primary: #0f172a;
+        --bg-canvas: #F8FAFC;
+        --bg-card: #FFFFFF;
+        --bg-sidebar: #FFFFFF;
+        --bg-elevated: #F1F5F9;
+        --border-subtle: #E2E8F0;
+        --border-focus: #2563EB;
+        --text-primary: #0F172A;
         --text-secondary: #475569;
-        --accent: #2563eb;
-        --accent-soft: #eff6ff;
-        --input-bg: #ffffff;
-        --code-bg: #eef2ff;
-        --code-fg: #1e3a8a;
-        --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06);
-        --badge-success-bg: #dcfce7;
+        --text-muted: #64748B;
+        --accent: #2563EB;
+        --accent-hover: #1D4ED8;
+        --accent-soft: #EFF6FF;
+        --accent-glow: rgba(37, 99, 235, 0.16);
+        --input-bg: #FFFFFF;
+        --code-bg: #F1F5F9;
+        --code-fg: #1E3A8A;
+        --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+        --shadow-hover: 0 10px 25px -5px rgba(37, 99, 235, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+        --sidebar-text: #0F172A;
+        --sidebar-text-muted: #64748B;
+        --sidebar-nav-active-bg: #EFF6FF;
+        --sidebar-nav-active-border: #2563EB;
+        --sidebar-nav-active-color: #2563EB;
+        --card-top-border: #2563EB;
+        --radio-border: #94A3B8;
+        --radio-checked: #2563EB;
+        --badge-success-bg: #DCFCE7;
         --badge-success-fg: #166534;
-        --badge-success-border: #bbf7d0;
-        --badge-warn-bg: #fef3c7;
-        --badge-warn-fg: #92400e;
-        --badge-warn-border: #fde68a;
-        --badge-danger-bg: #fee2e2;
-        --badge-danger-fg: #991b1b;
-        --badge-danger-border: #fecaca;
+        --badge-success-border: #BBF7D0;
+        --badge-warn-bg: #FEF3C7;
+        --badge-warn-fg: #92400E;
+        --badge-warn-border: #FDE68A;
+        --badge-danger-bg: #FEE2E2;
+        --badge-danger-fg: #991B1B;
+        --badge-danger-border: #FECACA;
     }
     """,
     "Night": """
     :root {
-        --bg-canvas: #0b1120;
-        --bg-card: #111827;
-        --bg-sidebar: #0f172a;
-        --bg-elevated: #1e293b;
-        --border-subtle: #1f2937;
-        --text-primary: #f1f5f9;
-        --text-secondary: #94a3b8;
-        --accent: #3b82f6;
-        --accent-soft: rgba(59, 130, 246, 0.16);
-        --input-bg: #1e293b;
-        --code-bg: #1e293b;
-        --code-fg: #93c5fd;
-        --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.28);
+        --bg-canvas: #0B1120;
+        --bg-card: #151F32;
+        --bg-sidebar: #111827;
+        --bg-elevated: #1E293B;
+        --border-subtle: #334155;
+        --border-focus: #3B82F6;
+        --text-primary: #F8FAFC;
+        --text-secondary: #CBD5E1;
+        --text-muted: #94A3B8;
+        --accent: #3B82F6;
+        --accent-hover: #60A5FA;
+        --accent-soft: rgba(59, 130, 246, 0.14);
+        --accent-glow: rgba(59, 130, 246, 0.28);
+        --input-bg: #1E293B;
+        --code-bg: #1E293B;
+        --code-fg: #93C5FD;
+        --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.25);
+        --shadow-hover: 0 12px 30px -4px rgba(59, 130, 246, 0.25), 0 4px 12px rgba(0, 0, 0, 0.35);
+        --sidebar-text: #F8FAFC;
+        --sidebar-text-muted: #94A3B8;
+        --sidebar-nav-active-bg: rgba(59, 130, 246, 0.18);
+        --sidebar-nav-active-border: #3B82F6;
+        --sidebar-nav-active-color: #60A5FA;
+        --card-top-border: #3B82F6;
+        --radio-border: #64748B;
+        --radio-checked: #3B82F6;
         --badge-success-bg: rgba(34, 197, 94, 0.16);
-        --badge-success-fg: #86efac;
-        --badge-success-border: rgba(34, 197, 94, 0.38);
+        --badge-success-fg: #86EFAC;
+        --badge-success-border: rgba(34, 197, 94, 0.35);
         --badge-warn-bg: rgba(245, 158, 11, 0.16);
-        --badge-warn-fg: #fcd34d;
-        --badge-warn-border: rgba(245, 158, 11, 0.38);
+        --badge-warn-fg: #FCD34D;
+        --badge-warn-border: rgba(245, 158, 11, 0.35);
         --badge-danger-bg: rgba(239, 68, 68, 0.16);
-        --badge-danger-fg: #fca5a5;
-        --badge-danger-border: rgba(239, 68, 68, 0.38);
+        --badge-danger-fg: #FCA5A5;
+        --badge-danger-border: rgba(239, 68, 68, 0.35);
     }
     """,
 }
@@ -209,22 +242,24 @@ def main() -> None:
         st.markdown(
             """
             <div class="sidebar-brand">
-                <span class="sidebar-brand-pill">SaaS Workspace</span>
-                <p class="sidebar-brand-title">AI Requirement Analyzer</p>
+                <span class="sidebar-brand-pill">AI ARCHITECT</span>
+                <h2 class="sidebar-brand-title">Requirement Analyzer</h2>
                 <p class="sidebar-brand-sub">Client Discovery to Project Plan</p>
             </div>
             """,
             unsafe_allow_html=True,
         )
 
+        st.caption("Navigation")
         selected_page = st.radio(
             "Navigation",
             options=PAGES,
+            format_func=lambda p: PAGE_ICONS.get(p, p),
             key="nav_page",
             label_visibility="collapsed",
         )
 
-        st.markdown("<div style='height: 0.4rem;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 0.6rem;'></div>", unsafe_allow_html=True)
         st.caption("Appearance")
         theme_choice = st.radio(
             "Theme",
@@ -250,10 +285,10 @@ def main() -> None:
         st.markdown(
             f"""
             <div class="workspace-card">
-                <div><strong>AI Engine:</strong> <code>{settings.llm_provider}</code></div>
-                <div><strong>Model:</strong> <code>{settings.active_model_name()}</code></div>
-                <div><strong>API Status:</strong> {key_badge}</div>
-                <div><strong>Storage:</strong> <code>SQLite Ready</code></div>
+                <div class="ws-item"><span class="ws-label">AI Engine:</span> <code>{settings.llm_provider}</code></div>
+                <div class="ws-item"><span class="ws-label">Model:</span> <code>{settings.active_model_name()}</code></div>
+                <div class="ws-item"><span class="ws-label">API Status:</span> {key_badge}</div>
+                <div class="ws-item"><span class="ws-label">Storage:</span> <code>SQLite Ready</code></div>
             </div>
             """,
             unsafe_allow_html=True,
